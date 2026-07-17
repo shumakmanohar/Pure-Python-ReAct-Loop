@@ -117,6 +117,71 @@ Summarize findings.
 ...
 ```
 
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/<your-username>/agent-loop.git
+
+cd agent-loop
+```
+
+### 2. Create a virtual environment
+
+**macOS / Linux**
+
+```bash
+python3 -m venv .venv
+
+source .venv/bin/activate
+```
+
+**Windows**
+
+```powershell
+python -m venv .venv
+
+.venv\Scripts\activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file in the project root.
+
+```env
+GEMINI_API_KEY=your_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+---
+
+## Running the Agent
+
+Run the agent by providing a goal as a command-line argument.
+
+```bash
+python3 main.py "Get today's AI news"
+```
+
+More examples:
+
+```bash
+python3 main.py "Research Stripe"
+
+python3 main.py "Summarize today's AI news"
+
+python3 main.py "Find the latest Python release"
+
+python3 main.py "Research Model Context Protocol"
+```
+
 ---
 
 ## Tech Stack
@@ -141,16 +206,6 @@ Summarize findings.
 - Tool System
 - Web Search
 - Web Scraping
-
-### 🚧 Phase 2
-
-- Browser Automation
-- Memory
-- Streaming Execution
-- Parallel Tool Calls
-- Better Planning
-- Retry & Recovery
-- Multi-Agent Workflows
 
 ---
 
