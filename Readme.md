@@ -24,6 +24,10 @@ The goal is to build a generic agent that can:
 
 ---
 
+## Demo
+
+![Application Demo Video](demo.gif)
+
 ## Architecture
 
 ```text
