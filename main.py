@@ -1,29 +1,20 @@
 import asyncio
+import sys
 
 from app.agent.engine import run_agent
 from app.agent.state import AgentState
 
 
 async def main():
-    state = AgentState(
-        goal="""
-Summarize today's AI news.
-Include:
 
-- Major announcements
-- Companies involved
-- Why each story matters
+    if len(sys.argv) < 2:
+        print("Usage:")
+        print('python3 main.py "Your goal"')
+        return
 
-Produce a concise summary.
-"""
-    )
-
-    result = await run_agent(state)
-    print("\n")
-    print("=" * 60)
-    print("FINAL ANSWER")
-    print("=" * 60)
-    print(result.final_answer)
+    goal = sys.argv[1]
+    state = AgentState(goal=goal)
+    await run_agent(state)
 
 
 asyncio.run(main())

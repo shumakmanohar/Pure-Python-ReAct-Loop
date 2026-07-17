@@ -10,6 +10,14 @@ from app.agent.prompts import build_prompt
 from app.agent.state import AgentState
 from app.llm.client import generate
 from app.tools.registry import execute_tool
+from app.console import (
+    show_iteration,
+    show_action,
+    show_final,
+    show_goal,
+    show_observation,
+    show_thought,
+)
 
 
 async def run_agent(state: AgentState):
@@ -25,20 +33,19 @@ async def run_agent(state: AgentState):
         - Repeat
     """
     state.status = AgentStatus.RUNNING
+    show_goal(state.goal)
 
     while True:
         # Guard 1
         if state.iteration >= state.max_iterations:
             state.status = AgentStatus.FAILED
-            state.finised = True
+            state.finished = True
             state.final_answer = "Max iterations reached."
             return state
 
         state.iteration += 1
 
-        print("=" * 60)
-        print(f"Iteration: {state.iteration}")
-        print("=" * 60)
+        show_iteration(state.iteration)
 
         # Build prompt
         prompt = build_prompt(state)
@@ -49,8 +56,6 @@ async def run_agent(state: AgentState):
 
         # Ask LLM
         response_text = await generate(prompt)
-        print("\nLLM Response:\n")
-        print(response_text)
 
         # Parse response
         parsed = parse_response(response_text)
@@ -59,6 +64,7 @@ async def run_agent(state: AgentState):
         if parsed.thought:
             state.current_thought = parsed.thought
             state.add_event(ThoughtEvent(thought=parsed.thought))
+            show_thought(parsed.thought)
 
         # Finished?
         if parsed.final_answer:
@@ -66,6 +72,7 @@ async def run_agent(state: AgentState):
             state.finished = True
             state.final_answer = parsed.final_answer
             state.add_event(FinalAnswerEvent(answer=parsed.final_answer))
+            show_final(parsed.final_answer)
             return state
 
         # Action
@@ -79,12 +86,10 @@ async def run_agent(state: AgentState):
         state.add_event(ActionEvent(tool=parsed.action, tool_input=parsed.action_input))
 
         # Execute tool
-        print(f"\nExecuting Tool: {parsed.action}")
+        show_action(parsed.action, parsed.action_input)
 
         result = await execute_tool(parsed.action, parsed.action_input)
 
-        print("=" * 60)
-        print(f"Tool Result: {result}")
-        print("=" * 60)
+        show_observation(result.content)
 
         state.add_event(ObservationEvent(observation=result.content))
