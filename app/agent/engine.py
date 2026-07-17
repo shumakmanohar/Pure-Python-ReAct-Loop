@@ -43,6 +43,10 @@ async def run_agent(state: AgentState):
         # Build prompt
         prompt = build_prompt(state)
 
+        # print("=" * 60)
+        # print(f"\n Prompt : {prompt} \n")
+        # print("=" * 60)
+
         # Ask LLM
         response_text = await generate(prompt)
         print("\nLLM Response:\n")
@@ -77,8 +81,10 @@ async def run_agent(state: AgentState):
         # Execute tool
         print(f"\nExecuting Tool: {parsed.action}")
 
-        observation = await execute_tool(parsed.action, parsed.action_input)
-        print("\nObservation:\n")
-        print(observation)
+        result = await execute_tool(parsed.action, parsed.action_input)
 
-        state.add_event(ObservationEvent(observation=observation))
+        print("=" * 60)
+        print(f"Tool Result: {result}")
+        print("=" * 60)
+
+        state.add_event(ObservationEvent(observation=result.content))

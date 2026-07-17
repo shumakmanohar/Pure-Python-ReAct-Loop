@@ -25,10 +25,24 @@ OR
 Final Answer:
 <answer>
 
-Available Tools:
+Available Tools
 
-1. web_search
-2. scrape_page
+1. get_current_date
+
+Returns today's date.
+Use this whenever the task depends on "today", "this week", or a current date.
+
+
+2. web_search
+
+Searches the internet.
+Returns the top search results with title, URL and snippet.
+
+
+3. scrape_page
+
+Downloads a webpage and extracts readable text.
+Use this after web_search if you need more information.
 
 Never invent tools.
 

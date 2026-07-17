@@ -2,30 +2,28 @@ import asyncio
 
 from app.agent.engine import run_agent
 from app.agent.state import AgentState
-import app.tools
+
 
 async def main():
-  state = AgentState(
+    state = AgentState(
         goal="""
-Research Stripe.
+Summarize today's AI news.
+Include:
 
-Find:
+- Major announcements
+- Companies involved
+- Why each story matters
 
-- Company Description
-
-- CEO
-
-- Main Product
-
-Then provide a summary.
+Produce a concise summary.
 """
     )
-  
-  result = await run_agent(state)
-  print("\n")
-  print("=" * 60)
-  print("FINAL ANSWER")
-  print("=" * 60)
-  print(result.final_answer)
-  
+
+    result = await run_agent(state)
+    print("\n")
+    print("=" * 60)
+    print("FINAL ANSWER")
+    print("=" * 60)
+    print(result.final_answer)
+
+
 asyncio.run(main())
